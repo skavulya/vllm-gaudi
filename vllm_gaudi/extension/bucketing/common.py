@@ -250,10 +250,10 @@ def generate_buckets(bs_range, query_range, ctx_range, is_prompt, max_model_len,
     # filter rules for buckets
     # prompt
     def not_over_max_model_len(bs, query, ctx):
-        if not bs * (query + ctx * block_size) <= max_model_len:
+        if not (query + ctx * block_size) <= max_model_len:
             omitted_buckets.add(
-                ("condition: bs * (query + ctx * block_size) <= max_model_len", "-> bs, query, ctx: ", bs, query, ctx))
-        return bs * (query + ctx * block_size) <= max_model_len
+                ("condition: (query + ctx * block_size) <= max_model_len", "-> bs, query, ctx: ", bs, query, ctx))
+        return (query + ctx * block_size) <= max_model_len
 
     def not_over_max_num_batched_tokens(bs, query, ctx):
         if not bs * query <= max_num_batched_tokens:
